@@ -60,4 +60,16 @@ class PostRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByParent($value)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.parent = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(100)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

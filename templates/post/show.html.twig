@@ -18,6 +18,58 @@
         </tbody>
     </table>
 
+    <h2>Parent post</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if parent.id is defined %}
+            <tr>
+                <td>{{ parent.id }}</td>
+                <td>{{ parent.content }}</td>
+                <td>
+                    <a href="{{ path('post_show', {'id': post.id}) }}">show</a>
+                    <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endif %}
+    </table>
+
+    <h2>Child posts</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for child in children %}
+            <tr>
+                <td>{{ child.id }}</td>
+                <td>{{ child.content }}</td>
+                <td>
+                    <a href="{{ path('post_show', {'id': post.id}) }}">show</a>
+                    <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+    </table>
+
     <a href="{{ path('post_index') }}">back to list</a>
 
     <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>

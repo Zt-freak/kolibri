@@ -21,6 +21,7 @@
                 <td>
                     <a href="{{ path('category_show', {'id': category.id}) }}">show</a>
                     <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
+                    <a href="{{ path('category_posts', {'id': category.id}) }}">posts</a>
                 </td>
             </tr>
         {% else %}
