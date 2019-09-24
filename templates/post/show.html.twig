@@ -28,13 +28,13 @@
             </tr>
         </thead>
         <tbody>
-        {% if parent.id is defined %}
+        {% if parent[0] is defined %}
             <tr>
-                <td>{{ parent.id }}</td>
-                <td>{{ parent.content }}</td>
+                <td>{{ parent[0].id }}</td>
+                <td>{{ parent[0].content }}</td>
                 <td>
-                    <a href="{{ path('post_show', {'id': post.id}) }}">show</a>
-                    <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+                    <a href="{{ path('post_show', {'id': parent[0].id}) }}">show</a>
+                    <a href="{{ path('post_edit', {'id': parent[0].id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -59,8 +59,8 @@
                 <td>{{ child.id }}</td>
                 <td>{{ child.content }}</td>
                 <td>
-                    <a href="{{ path('post_show', {'id': post.id}) }}">show</a>
-                    <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+                    <a href="{{ path('post_show', {'id': child.id}) }}">show</a>
+                    <a href="{{ path('post_edit', {'id': child.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

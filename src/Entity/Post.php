@@ -101,7 +101,7 @@ class Post
         return $this->parent;
     }
 
-    public function setparent(?Post $parent): self
+    public function setParent(?Post $parent): self
     {
         $this->parent = $parent;
 
