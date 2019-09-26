@@ -4,32 +4,21 @@
 
 {% block body %}
     <h1>Post index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Content</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-            <tr>
-                <td>{{ post.id }}</td>
-                <td>{{ post.content }}</td>
-                <td>
-                    <a href="{{ path('post_show', {'id': post.id}) }}">show</a>
-                    <a href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('post_new') }}">Create new</a>
+    {% for post in posts %}
+        <div class="post--child">
+            <div class="post__userbox">
+                <img class="post__avatar" src="{{ post.user.avatar }}">
+                <a class="post__username">{{ post.user }}</a>
+            </div>
+            <div class="post__content">
+                <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
+            </div>
+        </div>
+    {% else %}
+        <p class="norepliesfound">No posts here... yet.</p>
+    {% endfor %}
+    {% if app.user %}
+        <p class="replies">Make a new post in this category:</p>
+        {{ include('post/_form.html.twig') }}
+    {% endif %}
 {% endblock %}

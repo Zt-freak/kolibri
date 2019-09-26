@@ -4,33 +4,12 @@
 
 {% block body %}
     <h1>Category index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
         {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>
-                    <a href="{{ path('category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
-                    <a href="{{ path('category_posts', {'id': category.id}) }}">posts</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
+            <div class="post">
+                <div class="post__content--category">
+                    <a href="{{ path('category_posts', {'id': category.id}) }}">{{ category.name }}</a>
+                </div>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
-
     <a href="{{ path('category_new') }}">Create new</a>
 {% endblock %}

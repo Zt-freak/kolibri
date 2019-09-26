@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\Page;
+use App\Entity\Post;
 use App\Form\CategoryType;
+use App\Form\CommentType;
 use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,11 +62,24 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/posts", name="category_posts", methods={"GET"})
+     * @Route("/{id}/posts", name="category_posts", methods={"GET", "POST"})
      */
-    public function posts(Category $category, PostRepository $postRepository): Response
+    public function posts(Request $request, Category $category, PostRepository $postRepository): Response
     {
+        $newPost = new Post();
+        $newPost->setCategory($category);
+        $newPost->setUser($this->getUser());
+        $form = $this->createForm(CommentType::class, $newPost);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newPost);
+            $entityManager->flush();
+        }
+        
         return $this->render('category/posts.html.twig', [
+            'form' => $form->createView(),
             'posts' => $postRepository->findByCategoryNoParent($category),
         ]);
     }

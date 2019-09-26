@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Form\CommentType;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,14 +51,33 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="post_show", methods={"GET"})
+     * @Route("/{id}", name="post_show", methods={"GET", "POST"})
      */
-    public function show(Post $post, PostRepository $postRepository): Response
+    public function show(Request $request, Post $post, PostRepository $postRepository): Response
     {
+        $newPost = new Post();
+        $newPost->setParent($postRepository->findById($post->getId())[0]);
+        $newPost->setCategory($post->getCategory());
+        $newPost->setUser($this->getUser());
+        $form = $this->createForm(CommentType::class, $newPost);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newPost);
+            $entityManager->flush();
+
+            $post = $newPost;
+        }
+
+        $parent = $postRepository->findById($post->getParent());
+        $children = $postRepository->findByParent($post);
+
         return $this->render('post/show.html.twig', [
+            'form' => $form->createView(),
             'post' => $post,
-            'parent' => $postRepository->findById($post->getParent()),
-            'children' => $postRepository->findByParent($post),
+            'parent' => $parent,
+            'children' => $children,
         ]);
     }
 
