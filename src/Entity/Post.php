@@ -29,7 +29,7 @@ class Post
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text", length=1500)
      */
     private $content;
 
