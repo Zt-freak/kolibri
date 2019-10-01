@@ -59,6 +59,14 @@ class PostController extends AbstractController
         $newPost->setParent($postRepository->findById($post->getId())[0]);
         $newPost->setCategory($post->getCategory());
         $newPost->setUser($this->getUser());
+
+        if ($post->getCategory()->getApproval() == 1) {
+            $newPost->setApproved(0);
+        }
+        else {
+            $newPost->setApproved(1);
+        }
+
         $form = $this->createForm(CommentType::class, $newPost);
         $form->handleRequest($request);
 
@@ -92,7 +100,7 @@ class PostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('post_index');
+            return $this->redirectToRoute('post_show', ['id' => $post]);
         }
 
         return $this->render('post/edit.html.twig', [

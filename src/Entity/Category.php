@@ -21,6 +21,11 @@ class Category
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approval;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,6 +43,18 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getApproval(): ?bool
+    {
+        return $this->approval;
+    }
+
+    public function setApproval(?bool $approval): self
+    {
+        $this->approval = $approval;
 
         return $this;
     }

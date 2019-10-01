@@ -4,38 +4,83 @@
 
 {% block body %}
     {% if parent[0] is defined %}
-    <div class="post--parent">
-        <div class="post__userbox">
-            <img class="post__avatar" src="{{ parent[0].user.avatar }}">
-            <a class="post__username">{{ parent[0].user }}</a>
+        {% if parent[0].approved == 1 %}
+        <div class="post--parent">
+            <div class="post__userbox">
+                <img class="post__avatar" src="{{ parent[0].user.avatar }}">
+                <a class="post__username">{{ parent[0].user }}</a>
+            </div>
+            <div class="post__content">
+                <a href="{{ path('post_show', {'id': parent[0].id}) }}">{{ parent[0].content }}</a>
+            </div>
         </div>
-        <div class="post__content">
-            <a href="{{ path('post_show', {'id': parent[0].id}) }}">{{ parent[0].content }}</a>
-        </div>
-    </div>
+        {% else %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="post--parent post--unapproved">
+                    <div class="post__userbox">
+                        <img class="post__avatar" src="{{ parent[0].user.avatar }}">
+                        <a class="post__username">{{ parent[0].user }} (unapproved post)</a>
+                        &nbsp;<a class="approvelink" href="{{ path('post_edit', {'id': parent[0].id}) }}">edit</a>
+                    </div>
+                    <div class="post__content">
+                        <a href="{{ path('post_show', {'id': parent[0].id}) }}">{{ post.content }}</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
     {% endif %}
 
-    <div class="post">
-        <div class="post__userbox">
-            <img class="post__avatar" src="{{ post.user.avatar }}">
-            <a class="post__username">{{ post.user }}</a>
+    {% if post.approved == 1 %}
+        <div class="post">
+            <div class="post__userbox">
+                <img class="post__avatar" src="{{ post.user.avatar }}">
+                <a class="post__username">{{ post.user }}</a>
+            </div>
+            <div class="post__content">
+                <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
+            </div>
         </div>
-        <div class="post__content">
-            <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
-        </div>
-    </div>
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="post post--unapproved">
+                <div class="post__userbox">
+                    <img class="post__avatar" src="{{ post.user.avatar }}">
+                    <a class="post__username">{{ post.user }} (unapproved post)</a>
+                    &nbsp;<a class="approvelink" href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+                </div>
+                <div class="post__content">
+                    <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
 
     <p class="replies">replies:</p>
     {% for child in children %}
-    <div class="post--child">
-        <div class="post__userbox">
-            <img class="post__avatar" src="{{ child.user.avatar }}">
-            <a class="post__username">{{ child.user }}</a>
-        </div>
-        <div class="post__content">
-            <a href="{{ path('post_show', {'id': child.id}) }}">{{ child.content }}</a>
-        </div>
-    </div>
+        {% if child.approved == 1 %}
+            <div class="post--child">
+                <div class="post__userbox">
+                    <img class="post__avatar" src="{{ child.user.avatar }}">
+                    <a class="post__username">{{ child.user }}</a>
+                </div>
+                <div class="post__content">
+                    <a href="{{ path('post_show', {'id': child.id}) }}">{{ child.content }}</a>
+                </div>
+            </div>
+        {% else %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="post--child post--unapproved">
+                    <div class="post__userbox">
+                        <img class="post__avatar" src="{{ child.user.avatar }}">
+                        <a class="post__username">{{ child.user }} (unapproved post)</a>
+                        &nbsp;<a class="approvelink" href="{{ path('post_edit', {'id': child.id}) }}">edit</a>
+                    </div>
+                    <div class="post__content">
+                        <a href="{{ path('post_show', {'id': child.id}) }}">{{ child.content }}</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
     {% else %}
     <p class="norepliesfound">No replies here... yet.</p>
     {% endfor %}

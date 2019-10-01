@@ -46,6 +46,11 @@ class Post
      */
     private $parent;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Post
     public function setParent(?Post $parent): self
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
 
         return $this;
     }

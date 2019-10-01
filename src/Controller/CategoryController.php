@@ -69,6 +69,14 @@ class CategoryController extends AbstractController
         $newPost = new Post();
         $newPost->setCategory($category);
         $newPost->setUser($this->getUser());
+
+        if ($category->getApproval() == 1) {
+            $newPost->setApproved(0);
+        }
+        else {
+            $newPost->setApproved(1);
+        }
+
         $form = $this->createForm(CommentType::class, $newPost);
         $form->handleRequest($request);
 

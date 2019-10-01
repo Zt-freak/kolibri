@@ -5,15 +5,30 @@
 {% block body %}
     <h1>Post index</h1>
     {% for post in posts %}
-        <div class="post--child">
-            <div class="post__userbox">
-                <img class="post__avatar" src="{{ post.user.avatar }}">
-                <a class="post__username">{{ post.user }}</a>
+        {% if post.approved == 1 %}
+            <div class="post--child">
+                <div class="post__userbox">
+                    <img class="post__avatar" src="{{ post.user.avatar }}">
+                    <a class="post__username">{{ post.user }}</a>
+                </div>
+                <div class="post__content">
+                    <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
+                </div>
             </div>
-            <div class="post__content">
-                <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
-            </div>
-        </div>
+        {% else %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="post--child post--unapproved">
+                    <div class="post__userbox">
+                        <img class="post__avatar" src="{{ post.user.avatar }}">
+                        <a class="post__username">{{ post.user }} (unapproved post)</a><br />
+                        &nbsp;<a class="approvelink" href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
+                    </div>
+                    <div class="post__content">
+                        <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
     {% else %}
         <p class="norepliesfound">No posts here... yet.</p>
     {% endfor %}

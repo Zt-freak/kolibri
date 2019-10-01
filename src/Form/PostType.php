@@ -16,6 +16,7 @@ class PostType extends AbstractType
             ->add('category')
             ->add('user')
             ->add('parent')
+            ->add('approved')
         ;
     }
 
