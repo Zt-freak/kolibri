@@ -13,7 +13,7 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('approval')
+            ->add('approval', null, ['label' => "Requires administrator approval"])
         ;
     }
 

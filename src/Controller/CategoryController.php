@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Knp\Component\Pager\PaginatorInterface;
+
 /**
  * @Route("/category")
  */
@@ -64,7 +66,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/{id}/posts", name="category_posts", methods={"GET", "POST"})
      */
-    public function posts(Request $request, Category $category, PostRepository $postRepository): Response
+    public function posts(Request $request, Category $category, PostRepository $postRepository, PaginatorInterface $paginator): Response
     {
         $newPost = new Post();
         $newPost->setCategory($category);
@@ -85,10 +87,17 @@ class CategoryController extends AbstractController
             $entityManager->persist($newPost);
             $entityManager->flush();
         }
+
+
+        $posts = $paginator->paginate(
+            $postRepository->findByCategoryNoParent($category), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
         
         return $this->render('category/posts.html.twig', [
             'form' => $form->createView(),
-            'posts' => $postRepository->findByCategoryNoParent($category),
+            'posts' => $posts,
         ]);
     }
 

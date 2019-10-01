@@ -84,6 +84,7 @@
     {% else %}
     <p class="norepliesfound">No replies here... yet.</p>
     {% endfor %}
+    {{ knp_pagination_render(children) }}
     {% if app.user %}
         {{ include('post/_form.html.twig') }}
     {% endif %}
