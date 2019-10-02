@@ -7,9 +7,11 @@
         {% for category in categories %}
             <div class="post">
                 <div class="post__content--category">
-                    <a href="{{ path('category_posts', {'id': category.id}) }}">{{ category.name }}</a>
+                    <a href="{{ path('category_posts', {'id': category[0]}) }}">{{ category[1] }} <small>({{ category[2] }} posts)</small></a>
                 </div>
             </div>
         {% endfor %}
-    <a href="{{ path('category_new') }}">Create new</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('category_new') }}">Create new</a>
+        {% endif %}
 {% endblock %}

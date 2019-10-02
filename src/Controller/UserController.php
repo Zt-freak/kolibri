@@ -84,7 +84,9 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_edit');
+            return $this->redirectToRoute('user_edit', [
+                'id' => $user->getId(),
+            ]);
         }
 
         $adminForm = $this->createForm(UserTypeAdmin::class, $user);

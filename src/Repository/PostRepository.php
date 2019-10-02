@@ -73,6 +73,20 @@ class PostRepository extends ServiceEntityRepository
         ;
     }
 
+    public function countByCategoryNoParent($value)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('count(p.id)')
+            ->andWhere('p.category = :val')
+            ->andWhere('p.parent IS NULL')
+            ->setParameter('val', $value)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(100)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     public function findNotApproved()
     {
         return $this->createQueryBuilder('p')

@@ -37,7 +37,7 @@
         <p class="norepliesfound">No posts here... yet.</p>
     {% endfor %}
     {{ knp_pagination_render(posts) }}
-    {% if is_granted('ROLE_VERIFIED') or is_granted('ROLE_ADMIN')%}
+    {% if is_granted('ROLE_VERIFIED') or is_granted('ROLE_ADMIN') %}
         <p class="replies">Make a new post in this category:</p>
         {{ include('post/_form.html.twig') }}
     {% endif %}
