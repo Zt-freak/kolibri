@@ -26,6 +26,11 @@ class Category
      */
     private $approval;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,6 +60,18 @@ class Category
     public function setApproval(?bool $approval): self
     {
         $this->approval = $approval;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

@@ -28,7 +28,12 @@ class CategoryController extends AbstractController
         $i = 0;
         foreach ($categories as &$category) {
             $postCount = $postRepository->countByCategoryNoParent($category);
-            array_push($categoryData, [$category->getId(), $category->getName(), $postCount]);
+            array_push($categoryData, [
+                "id" => $category->getId(),
+                "name" => $category->getName(),
+                "description" => $category->getDescription(),
+                "postCount" => $postCount
+            ]);
             $i++;
         }
 

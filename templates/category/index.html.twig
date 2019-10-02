@@ -7,7 +7,8 @@
         {% for category in categories %}
             <div class="post">
                 <div class="post__content--category">
-                    <a href="{{ path('category_posts', {'id': category[0]}) }}">{{ category[1] }} <small>({{ category[2] }} posts)</small></a>
+                    <a href="{{ path('category_posts', {'id': category.id}) }}">{{ category.name }} <small>({{ category.postCount }} posts)</small></a>
+                    <small>{{ category.description }}</small>
                 </div>
             </div>
         {% endfor %}
