@@ -4,7 +4,12 @@
 
 {% block body %}
     <h1>Edit profile</h1>
-    {% if is_granted('ROLE_ADMIN') or user.id == app.user.id %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ include('user/_admin_form.html.twig', {'button_label': 'Update'}) }}
+        <a href="{{ path('user_index') }}">back to list</a>
+
+        {{ include('user/_delete_form.html.twig') }}
+    {% elseif user.id == app.user.id %}
         {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
     {% else %}
         <p>Access denied.</p>

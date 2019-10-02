@@ -11,7 +11,9 @@
                 <a class="post__username">{{ parent[0].user }}</a>
             </div>
             <div class="post__content">
-                <a href="{{ path('post_show', {'id': parent[0].id}) }}">{{ parent[0].content }}</a>
+                <a href="{{ path('post_show', {'id': parent[0].id}) }}">
+                    {{ parent[0].content|slice(0, 100) }}{% if parent[0].content[0:100] is not same as (parent[0].content) %}...{% endif %}
+                </a>
             </div>
         </div>
         {% else %}
@@ -23,7 +25,9 @@
                         &nbsp;<a class="approvelink" href="{{ path('post_edit', {'id': parent[0].id}) }}">edit</a>
                     </div>
                     <div class="post__content">
-                        <a href="{{ path('post_show', {'id': parent[0].id}) }}">{{ post.content }}</a>
+                        <a href="{{ path('post_show', {'id': parent[0].id}) }}">
+                            {{ parent[0].content|slice(0, 100) }}{% if parent[0].content[0:100] is not same as (parent[0].content) %}...{% endif %}
+                        </a>
                     </div>
                 </div>
             {% endif %}
@@ -55,7 +59,7 @@
         {% endif %}
     {% endif %}
 
-    <p class="replies">replies:</p>
+    <p class="replies">replies ({{ children.getTotalItemCount }}) :</p>
     {% for child in children %}
         {% if child.approved == 1 %}
             <div class="post--child">
@@ -64,7 +68,9 @@
                     <a class="post__username">{{ child.user }}</a>
                 </div>
                 <div class="post__content">
-                    <a href="{{ path('post_show', {'id': child.id}) }}">{{ child.content }}</a>
+                    <a href="{{ path('post_show', {'id': child.id}) }}">
+                        {{ child.content|slice(0, 100) }}{% if child.content[0:100] is not same as (child.content) %}...{% endif %}
+                    </a>
                 </div>
             </div>
         {% else %}
@@ -76,7 +82,9 @@
                         &nbsp;<a class="approvelink" href="{{ path('post_edit', {'id': child.id}) }}">edit</a>
                     </div>
                     <div class="post__content">
-                        <a href="{{ path('post_show', {'id': child.id}) }}">{{ child.content }}</a>
+                        <a href="{{ path('post_show', {'id': child.id}) }}">
+                            {{ child.content|slice(0, 100) }}{% if child.content[0:100] is not same as (child.content) %}...{% endif %}
+                        </a>
                     </div>
                 </div>
             {% endif %}
@@ -85,7 +93,7 @@
     <p class="norepliesfound">No replies here... yet.</p>
     {% endfor %}
     {{ knp_pagination_render(children) }}
-    {% if app.user %}
+    {% if is_granted('ROLE_VERIFIED') or is_granted('ROLE_ADMIN')%}
         {{ include('post/_form.html.twig') }}
     {% endif %}
 {% endblock %}

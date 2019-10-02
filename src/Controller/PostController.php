@@ -30,6 +30,16 @@ class PostController extends AbstractController
     }
 
     /**
+     * @Route("/unapproved", name="post_unapproved", methods={"GET"})
+     */
+     public function unapproved(PostRepository $postRepository): Response
+     {
+         return $this->render('post/index.html.twig', [
+             'posts' => $postRepository->findNotApproved(),
+         ]);
+     }
+
+    /**
      * @Route("/new", name="post_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
@@ -129,4 +139,5 @@ class PostController extends AbstractController
 
         return $this->redirectToRoute('post_index');
     }
+    
 }

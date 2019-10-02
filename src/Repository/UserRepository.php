@@ -16,11 +16,11 @@ class UserRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Category::class);
+        parent::__construct($registry, User::class);
     }
 
     // /**
-    //  * @return User[] Returns an array of Category objects
+    //  * @return User[] Returns an array of User objects
     //  */
     /*
     public function findByExampleField($value)
@@ -47,4 +47,15 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findNotApproved()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles NOT LIKE \'%"ROLE_ADMIN"%\'')
+            ->andWhere('u.roles NOT LIKE \'%"ROLE_VERIFIED"%\'')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

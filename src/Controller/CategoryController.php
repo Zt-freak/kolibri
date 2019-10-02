@@ -15,9 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Knp\Component\Pager\PaginatorInterface;
 
-/**
- * @Route("/category")
- */
 class CategoryController extends AbstractController
 {
     /**
@@ -31,7 +28,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="category_new", methods={"GET","POST"})
+     * @Route("category/new", name="category_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -54,7 +51,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="category_show", methods={"GET"})
+     * @Route("category/{id}", name="category_show", methods={"GET"})
      */
     public function show(Category $category): Response
     {
@@ -64,7 +61,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/posts", name="category_posts", methods={"GET", "POST"})
+     * @Route("category/{id}/posts", name="category_posts", methods={"GET", "POST"})
      */
     public function posts(Request $request, Category $category, PostRepository $postRepository, PaginatorInterface $paginator): Response
     {
@@ -102,7 +99,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="category_edit", methods={"GET","POST"})
+     * @Route("category/{id}/edit", name="category_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Category $category): Response
     {
@@ -122,7 +119,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="category_delete", methods={"DELETE"})
+     * @Route("category/{id}", name="category_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Category $category): Response
     {

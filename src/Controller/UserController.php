@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\UserTypeAdmin;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +29,16 @@ class UserController extends AbstractController
             'users' => $users,
         ]);
     }
+
+    /**
+     * @Route("/unapproved", name="user_unapproved", methods={"GET"})
+     */
+     public function unapproved(UserRepository $userRepository): Response
+     {
+         return $this->render('user/index.html.twig', [
+             'users' => $userRepository->findNotApproved(),
+         ]);
+     }
 
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
@@ -72,12 +84,22 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            return $this->redirectToRoute('user_edit');
+        }
+
+        $adminForm = $this->createForm(UserTypeAdmin::class, $user);
+        $adminForm->handleRequest($request);
+
+        if ($adminForm->isSubmitted() && $adminForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
             return $this->redirectToRoute('user_index');
         }
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'adminform' => $adminForm->createView(),
         ]);
     }
 

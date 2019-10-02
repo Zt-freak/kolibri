@@ -72,4 +72,15 @@ class PostRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findNotApproved()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.approved = 0')
+            ->orWhere('p.approved IS NULL')
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -168,12 +168,21 @@
             .current {
                 color: #ffffff;
             }
+
+            .table {
+                color: #ffffff;
+            }
         </style>
     </head>
     <body>
         <nav>
-            <a href="{{ path('default') }}">Home</a>
             <a href="{{ path('category_index') }}">Categories</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('user_index') }}">Users</a>
+                <a href="{{ path('post_index') }}">Posts</a>
+                <a href="{{ path('user_unapproved') }}">Unapproved Users</a>
+                <a href="{{ path('post_unapproved') }}">Unapproved Posts</a>
+            {% endif %}
             {% if app.user %}
                 <a href="{{ path('user_edit', {'id': app.user.id}) }}">Edit profile</a>
                 <a href="{{ path('fos_user_security_logout') }}">Log out</a>

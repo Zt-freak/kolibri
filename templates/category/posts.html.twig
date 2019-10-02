@@ -12,7 +12,9 @@
                     <a class="post__username">{{ post.user }}</a>
                 </div>
                 <div class="post__content">
-                    <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
+                    <a href="{{ path('post_show', {'id': post.id}) }}">
+                        {{ post.content|slice(0, 100) }}{% if post.content[0:100] is not same as (post.content) %}...{% endif %}
+                    </a>
                 </div>
             </div>
         {% else %}
@@ -24,7 +26,9 @@
                         &nbsp;<a class="approvelink" href="{{ path('post_edit', {'id': post.id}) }}">edit</a>
                     </div>
                     <div class="post__content">
-                        <a href="{{ path('post_show', {'id': post.id}) }}">{{ post.content }}</a>
+                        <a href="{{ path('post_show', {'id': post.id}) }}">
+                            {{ post.content|slice(0, 100) }}{% if post.content[0:100] is not same as (post.content) %}...{% endif %}
+                        </a>
                     </div>
                 </div>
             {% endif %}
@@ -33,7 +37,7 @@
         <p class="norepliesfound">No posts here... yet.</p>
     {% endfor %}
     {{ knp_pagination_render(posts) }}
-    {% if app.user %}
+    {% if is_granted('ROLE_VERIFIED') or is_granted('ROLE_ADMIN')%}
         <p class="replies">Make a new post in this category:</p>
         {{ include('post/_form.html.twig') }}
     {% endif %}
